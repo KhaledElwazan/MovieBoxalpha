@@ -3,7 +3,10 @@ package com.example.moviebox_alpha.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +34,8 @@ public class MovieDetailsFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-
-    public void setMovie(Result movie) {
-        this.movie = movie;
-    }
-
     private Result movie;
+    private boolean isFavorited = false;
 
     public MovieDetailsFragment() {
         // Required empty public constructor
@@ -60,6 +59,10 @@ public class MovieDetailsFragment extends Fragment {
         return fragment;
     }
 
+    public void setMovie(Result movie) {
+        this.movie = movie;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,13 +79,34 @@ public class MovieDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
 
+        final FloatingActionButton favorite = view.findViewById(R.id.favorite);
 
+
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                if (!isFavorited) {
+
+                    Snackbar.make(view, "Added to favorite movie list", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    favorite.setImageDrawable(ContextCompat.getDrawable(getContext(), android.R.drawable.btn_star_big_on));
+                    isFavorited = true;
+                } else {
+                    Snackbar.make(view, "Removed from favorite movie list", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    favorite.setImageDrawable(ContextCompat.getDrawable(getContext(), android.R.drawable.btn_star_big_off));
+                    isFavorited = false;
+                }
+            }
+        });
 
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    // TODO: Rename method, updRate argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
