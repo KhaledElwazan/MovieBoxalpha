@@ -2,8 +2,11 @@ package com.example.moviebox_alpha;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.moviebox_alpha.fragments.MovieDetailsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,8 +23,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(sectionPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
 
-
         tabs.setupWithViewPager(viewPager);
+
+
 
 
     }
