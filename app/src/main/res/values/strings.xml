@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Movie Box</string>
+    <string name="tab_text_1">Popular</string>
+    <string name="tab_text_2">Top Rated</string>
+    <string name="tab_text_3">Favorite</string>
+    <string name="API_KEY">ab6da60052ca37ee47ea2b3ef44ce07d</string>
+    <string name="baseURL">https://api.themoviedb.org/3/movie/</string>
+    <string name="imageURL">https://image.tmdb.org/t/p/w500</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
