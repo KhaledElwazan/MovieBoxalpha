@@ -80,6 +80,8 @@ public class MovieAdapter extends BaseAdapter {
 
         String posterURl = context.getString(R.string.imageURL) + movie.getPosterPath();
 
+        movie.setPosterURL(posterURl);
+
 
         new AsyncTask<String, Void, Bitmap>() {
 

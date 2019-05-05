@@ -1,12 +1,11 @@
 
 package com.example.moviebox_alpha.retrofit;
 
-import android.graphics.Bitmap;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class Result implements Serializable {
     @Override
@@ -26,7 +25,6 @@ public class Result implements Serializable {
                 ", adult=" + adult +
                 ", overview='" + overview + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
-                ", posterBitmap=" + posterBitmap +
                 ", posterURL='" + posterURL + '\'' +
                 '}';
     }
@@ -256,16 +254,10 @@ public class Result implements Serializable {
         return this;
     }
 
-    private Bitmap posterBitmap;
+
     private String posterURL;
 
-    public Bitmap getPosterBitmap() {
-        return posterBitmap;
-    }
 
-    public void setPosterBitmap(Bitmap posterBitmap) {
-        this.posterBitmap = posterBitmap;
-    }
 
     public String getPosterURL() {
         return posterURL;
