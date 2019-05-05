@@ -81,6 +81,8 @@ public class PopularTabFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_popular_tab, container, false);
 
+        getActivity().setTitle("Popular Tab");
+
         GridView gridView = view.findViewById(R.id.dataGrid);
         movieAdapter = new MovieAdapter(view.getContext());
         gridView.setAdapter(movieAdapter);
@@ -97,6 +99,8 @@ public class PopularTabFragment extends Fragment {
                 if (response.isSuccessful()) {
 
                     List<Result> results = response.body().getResults();
+
+
                     movieAdapter.setMovies(results);
                     movieAdapter.notifyDataSetChanged();
 

@@ -1,9 +1,11 @@
 package com.example.moviebox_alpha;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +25,9 @@ public class MovieAdapter extends BaseAdapter {
     private List<Result> movies;
     private Context context;
 
-
     public MovieAdapter(Context context) {
         this.context = context;
+
     }
 
     public void setMovies(List<Result> movies) {
@@ -59,6 +61,20 @@ public class MovieAdapter extends BaseAdapter {
 
 
         final ImageView moviePoster = convertView.findViewById(R.id.moviePoster);
+
+        moviePoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, MovieDetailsActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("movie", movie);
+                intent.putExtras(b); //Put your id to your next Intent
+                context.startActivity(intent);
+
+            }
+        });
+
+
         TextView movieTitle = convertView.findViewById(R.id.movieName);
 
 

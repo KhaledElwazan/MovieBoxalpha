@@ -3,11 +3,33 @@ package com.example.moviebox_alpha.retrofit;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+public class Result implements Serializable {
+    @Override
+    public String toString() {
+        return "Result{" +
+                "voteCount=" + voteCount +
+                ", id=" + id +
+                ", video=" + video +
+                ", voteAverage=" + voteAverage +
+                ", title='" + title + '\'' +
+                ", popularity=" + popularity +
+                ", posterPath='" + posterPath + '\'' +
+                ", originalLanguage='" + originalLanguage + '\'' +
+                ", originalTitle='" + originalTitle + '\'' +
+                ", genreIds=" + genreIds +
+                ", backdropPath='" + backdropPath + '\'' +
+                ", adult=" + adult +
+                ", overview='" + overview + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", posterBitmap=" + posterBitmap +
+                ", posterURL='" + posterURL + '\'' +
+                '}';
+    }
 
     @SerializedName("vote_count")
     @Expose
@@ -234,7 +256,22 @@ public class Result {
         return this;
     }
 
+    private Bitmap posterBitmap;
+    private String posterURL;
 
+    public Bitmap getPosterBitmap() {
+        return posterBitmap;
+    }
 
+    public void setPosterBitmap(Bitmap posterBitmap) {
+        this.posterBitmap = posterBitmap;
+    }
 
+    public String getPosterURL() {
+        return posterURL;
+    }
+
+    public void setPosterURL(String posterURL) {
+        this.posterURL = posterURL;
+    }
 }
