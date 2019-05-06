@@ -3,10 +3,7 @@ package com.example.moviebox_alpha.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,28 +76,7 @@ public class MovieDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie_details, container, false);
 
 
-        final FloatingActionButton favorite = view.findViewById(R.id.favorite);
 
-
-        favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                if (!isFavorited) {
-
-                    Snackbar.make(view, "Added to favorite movie list", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    favorite.setImageDrawable(ContextCompat.getDrawable(getContext(), android.R.drawable.btn_star_big_on));
-                    isFavorited = true;
-                } else {
-                    Snackbar.make(view, "Removed from favorite movie list", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    favorite.setImageDrawable(ContextCompat.getDrawable(getContext(), android.R.drawable.btn_star_big_off));
-                    isFavorited = false;
-                }
-            }
-        });
 
 
         return view;

@@ -1,13 +1,88 @@
-
 package com.example.moviebox_alpha.retrofit;
+
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
+
+@Entity
 public class Result implements Serializable {
+    @ColumnInfo(name = "vote_count")
+    @SerializedName("vote_count")
+    @Expose
+    private Integer voteCount;
+    @ColumnInfo(name = "id")
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @ColumnInfo(name = "video")
+    @SerializedName("video")
+    @Expose
+    private Boolean video;
+    @ColumnInfo(name = "vote_average")
+    @SerializedName("vote_average")
+    @Expose
+    private Double voteAverage;
+
+    @PrimaryKey
+    @ColumnInfo(name = "title")
+    @SerializedName("title")
+    @Expose
+    @NonNull
+    private String title;
+    @ColumnInfo(name = "popularity")
+    @SerializedName("popularity")
+    @Expose
+    private Double popularity;
+    @ColumnInfo(name = "poster_path")
+    @SerializedName("poster_path")
+    @Expose
+    private String posterPath;
+    @ColumnInfo(name = "original_language")
+    @SerializedName("original_language")
+    @Expose
+    private String originalLanguage;
+    @ColumnInfo(name = "original_title")
+    @SerializedName("original_title")
+    @Expose
+    private String originalTitle;
+
+    @TypeConverters({DataConverter.class})
+    @SerializedName("genre_ids")
+    @Expose
+    private List<Integer> genreIds = null;
+    @ColumnInfo(name = "backdrop_path")
+    @SerializedName("backdrop_path")
+    @Expose
+    private String backdropPath;
+    @ColumnInfo(name = "adult")
+    @SerializedName("adult")
+    @Expose
+    private Boolean adult;
+    @ColumnInfo(name = "overview")
+    @SerializedName("overview")
+    @Expose
+    private String overview;
+    @ColumnInfo(name = "release_date")
+    @SerializedName("release_date")
+    @Expose
+    private String releaseDate;
+
+
+    @ColumnInfo(name = "posterURL")
+    private String posterURL;
+
     @Override
     public String toString() {
         return "Result{" +
@@ -28,49 +103,6 @@ public class Result implements Serializable {
                 ", posterURL='" + posterURL + '\'' +
                 '}';
     }
-
-    @SerializedName("vote_count")
-    @Expose
-    private Integer voteCount;
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("video")
-    @Expose
-    private Boolean video;
-    @SerializedName("vote_average")
-    @Expose
-    private Double voteAverage;
-    @SerializedName("title")
-    @Expose
-    private String title;
-    @SerializedName("popularity")
-    @Expose
-    private Double popularity;
-    @SerializedName("poster_path")
-    @Expose
-    private String posterPath;
-    @SerializedName("original_language")
-    @Expose
-    private String originalLanguage;
-    @SerializedName("original_title")
-    @Expose
-    private String originalTitle;
-    @SerializedName("genre_ids")
-    @Expose
-    private List<Integer> genreIds = null;
-    @SerializedName("backdrop_path")
-    @Expose
-    private String backdropPath;
-    @SerializedName("adult")
-    @Expose
-    private Boolean adult;
-    @SerializedName("overview")
-    @Expose
-    private String overview;
-    @SerializedName("release_date")
-    @Expose
-    private String releaseDate;
 
     public Integer getVoteCount() {
         return voteCount;
@@ -135,6 +167,35 @@ public class Result implements Serializable {
     public Result withTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Result)) return false;
+        Result result = (Result) o;
+        return Objects.equals(getVoteCount(), result.getVoteCount()) &&
+                Objects.equals(getId(), result.getId()) &&
+                Objects.equals(getVideo(), result.getVideo()) &&
+                Objects.equals(getVoteAverage(), result.getVoteAverage()) &&
+                Objects.equals(getTitle(), result.getTitle()) &&
+                Objects.equals(getPopularity(), result.getPopularity()) &&
+                Objects.equals(getPosterPath(), result.getPosterPath()) &&
+                Objects.equals(getOriginalLanguage(), result.getOriginalLanguage()) &&
+                Objects.equals(getOriginalTitle(), result.getOriginalTitle()) &&
+                Objects.equals(getGenreIds(), result.getGenreIds()) &&
+                Objects.equals(getBackdropPath(), result.getBackdropPath()) &&
+                Objects.equals(getAdult(), result.getAdult()) &&
+                Objects.equals(getOverview(), result.getOverview()) &&
+                Objects.equals(getReleaseDate(), result.getReleaseDate()) &&
+                Objects.equals(getPosterURL(), result.getPosterURL());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(getVoteCount(), getId(), getVideo(), getVoteAverage(), getTitle(), getPopularity(), getPosterPath(), getOriginalLanguage(), getOriginalTitle(), getGenreIds(), getBackdropPath(), getAdult(), getOverview(), getReleaseDate(), getPosterURL());
     }
 
     public Double getPopularity() {
@@ -253,11 +314,6 @@ public class Result implements Serializable {
         this.releaseDate = releaseDate;
         return this;
     }
-
-
-    private String posterURL;
-
-
 
     public String getPosterURL() {
         return posterURL;

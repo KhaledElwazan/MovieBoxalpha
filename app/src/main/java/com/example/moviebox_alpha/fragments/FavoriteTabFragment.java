@@ -2,13 +2,20 @@ package com.example.moviebox_alpha.fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
+import com.example.moviebox_alpha.MovieAdapter;
 import com.example.moviebox_alpha.R;
+import com.example.moviebox_alpha.db.MovieDB;
+import com.example.moviebox_alpha.retrofit.Result;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +34,9 @@ public class FavoriteTabFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private MovieAdapter movieAdapter;
+    private MovieDB movieDB;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +75,37 @@ public class FavoriteTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favorite_tab, container, false);
+        View view = inflater.inflate(R.layout.fragment_popular_tab, container, false);
+
+
+        GridView gridView = view.findViewById(R.id.dataGrid);
+        movieAdapter = new MovieAdapter(view.getContext());
+        gridView.setAdapter(movieAdapter);
+
+        movieDB = MovieDB.getInstance(this.getContext());
+
+
+        new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Void... voids) {
+
+
+                List<Result> results = movieDB.getMovieDBDao().getAll();
+
+                movieAdapter.setMovies(results);
+
+
+                return true;
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                movieAdapter.notifyDataSetChanged();
+            }
+        }.execute();
+
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

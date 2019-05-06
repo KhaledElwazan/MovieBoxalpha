@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.moviebox_alpha.activities.MovieDetailsActivity;
 import com.example.moviebox_alpha.retrofit.Result;
 
 import java.io.InputStream;
@@ -94,12 +95,14 @@ public class MovieAdapter extends BaseAdapter {
 
                     InputStream inputStream = new URL(poster).openStream();
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
                     return bitmap;
 
                 } catch (Exception e) {
                     Log.e("failed loading poster", e.toString());
                 }
 
+                System.out.println("null");
                 return null;
             }
 

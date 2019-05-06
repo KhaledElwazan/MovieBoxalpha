@@ -1,12 +1,12 @@
-package com.example.moviebox_alpha;
+package com.example.moviebox_alpha.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.example.moviebox_alpha.fragments.MovieDetailsFragment;
+import com.example.moviebox_alpha.R;
+import com.example.moviebox_alpha.SectionPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
