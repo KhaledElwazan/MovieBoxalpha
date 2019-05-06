@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.moviebox_alpha.fragments.FavoriteTabFragment;
-import com.example.moviebox_alpha.fragments.MovieDetailsFragment;
 import com.example.moviebox_alpha.fragments.PopularTabFragment;
 import com.example.moviebox_alpha.fragments.TopRatedTabFragment;
 import com.example.moviebox_alpha.retrofit.Result;
