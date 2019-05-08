@@ -101,6 +101,7 @@ public class FavoriteTabFragment extends Fragment {
             @Override
             protected void onPostExecute(Boolean aBoolean) {
                 movieAdapter.notifyDataSetChanged();
+                movieDB.cleanUp();
             }
         }.execute();
 
@@ -129,6 +130,7 @@ public class FavoriteTabFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        movieDB.cleanUp();
         mListener = null;
     }
 

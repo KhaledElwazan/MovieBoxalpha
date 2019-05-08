@@ -26,6 +26,8 @@ public class MovieAdapter extends BaseAdapter {
     private List<Result> movies;
     private Context context;
 
+    // private Bitmap[] posters;
+
     public MovieAdapter(Context context) {
         this.context = context;
 
@@ -33,6 +35,44 @@ public class MovieAdapter extends BaseAdapter {
 
     public void setMovies(List<Result> movies) {
         this.movies = movies;
+
+//
+//        new AsyncTask<List<Result>, Void, Bitmap[]>() {
+//            @Override
+//            protected Bitmap[] doInBackground(List<Result>... voids) {
+//                List<Result> movies = voids[0];
+//                Bitmap[] posters = new Bitmap[movies.size()];
+//                for (int i = 0; i < movies.size(); i++) {
+//                    Result movie = movies.get(i);
+//
+//                    String posterURl = context.getString(R.string.imageURL) + movie.getPosterPath();
+//
+//                    movie.setPosterURL(posterURl);
+//
+//                    try {
+//                        InputStream inputStream = new URL(posterURl).openStream();
+//                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+//                        posters[i] = bitmap;
+//
+//
+//                    } catch (Exception e) {
+//
+//                        Log.e("loading poster", e.toString());
+//
+//                    }
+//
+//                }
+//
+//                return posters;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Bitmap[] bitmaps) {
+//                posters = bitmaps;
+//            }
+//        }.execute(this.movies);
+
+
     }
 
     @Override
@@ -69,7 +109,7 @@ public class MovieAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, MovieDetailsActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("movie", movie);
-                intent.putExtras(b); //Put your id to your next Intent
+                intent.putExtras(b);
                 context.startActivity(intent);
 
             }
@@ -77,7 +117,8 @@ public class MovieAdapter extends BaseAdapter {
 
 
         TextView movieTitle = convertView.findViewById(R.id.movieName);
-
+        movieTitle.setText(movie.getTitle());
+//        moviePoster.setImageBitmap(posters[position]);
 
         String posterURl = context.getString(R.string.imageURL) + movie.getPosterPath();
 
@@ -102,7 +143,6 @@ public class MovieAdapter extends BaseAdapter {
                     Log.e("failed loading poster", e.toString());
                 }
 
-                System.out.println("null");
                 return null;
             }
 
@@ -111,9 +151,6 @@ public class MovieAdapter extends BaseAdapter {
                 moviePoster.setImageBitmap(bitmap);
             }
         }.execute(posterURl);
-
-
-        movieTitle.setText(movie.getTitle());
 
 
         return convertView;

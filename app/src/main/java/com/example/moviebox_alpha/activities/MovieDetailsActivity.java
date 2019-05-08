@@ -4,7 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +23,7 @@ import com.example.moviebox_alpha.retrofit.Result;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
+
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
@@ -90,9 +93,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
             favorite = findViewById(R.id.favorite);
 
-            movieDB = MovieDB.getInstance(this);
+
+            if (movieDB == null)
+                movieDB = MovieDB.getInstance(context);
 
             new AsyncTask<Result, Void, Boolean>() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 protected Boolean doInBackground(Result... pars) {
 
@@ -120,7 +126,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     } else
                         favorite.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.btn_star_big_off));
 
+                    movieDB.cleanUp();
                 }
+
+
             }.execute(movie);
 
 
@@ -128,6 +137,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
+                    if (movieDB == null)
+                        movieDB = MovieDB.getInstance(context);
 
                     if (!isFavorited) {
 
@@ -136,6 +147,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         favorite.setImageDrawable(ContextCompat.getDrawable(context, android.R.drawable.btn_star_big_on));
                         isFavorited = true;
                         movieDB.getMovieDBDao().insert(movie);
+
                     } else {
                         Snackbar.make(view, "Removed from favorite movie list", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -143,6 +155,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         isFavorited = false;
                         movieDB.getMovieDBDao().delete(movie);
                     }
+                    if (movieDB != null)
+                        movieDB.cleanUp();
                 }
             });
 
