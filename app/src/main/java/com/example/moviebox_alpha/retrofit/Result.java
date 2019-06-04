@@ -322,4 +322,6 @@ public class Result implements Serializable {
     public void setPosterURL(String posterURL) {
         this.posterURL = posterURL;
     }
+
+
 }

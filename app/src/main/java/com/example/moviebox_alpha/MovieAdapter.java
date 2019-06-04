@@ -3,10 +3,7 @@ package com.example.moviebox_alpha;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +14,7 @@ import android.widget.TextView;
 import com.example.moviebox_alpha.activities.MovieDetailsActivity;
 import com.example.moviebox_alpha.retrofit.Result;
 
-import java.io.InputStream;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieAdapter extends BaseAdapter {
@@ -27,53 +23,19 @@ public class MovieAdapter extends BaseAdapter {
     private Context context;
 
     // private Bitmap[] posters;
+    private List<Bitmap> posters = new ArrayList<Bitmap>();
 
     public MovieAdapter(Context context) {
         this.context = context;
 
     }
 
-    public void setMovies(List<Result> movies) {
+    public void setMovies(List<Result> movies, List<Bitmap> posters) {
         this.movies = movies;
-
-//
-//        new AsyncTask<List<Result>, Void, Bitmap[]>() {
-//            @Override
-//            protected Bitmap[] doInBackground(List<Result>... voids) {
-//                List<Result> movies = voids[0];
-//                Bitmap[] posters = new Bitmap[movies.size()];
-//                for (int i = 0; i < movies.size(); i++) {
-//                    Result movie = movies.get(i);
-//
-//                    String posterURl = context.getString(R.string.imageURL) + movie.getPosterPath();
-//
-//                    movie.setPosterURL(posterURl);
-//
-//                    try {
-//                        InputStream inputStream = new URL(posterURl).openStream();
-//                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-//                        posters[i] = bitmap;
-//
-//
-//                    } catch (Exception e) {
-//
-//                        Log.e("loading poster", e.toString());
-//
-//                    }
-//
-//                }
-//
-//                return posters;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Bitmap[] bitmaps) {
-//                posters = bitmaps;
-//            }
-//        }.execute(this.movies);
-
+        this.posters = posters;
 
     }
+
 
     @Override
     public int getCount() {
@@ -125,32 +87,11 @@ public class MovieAdapter extends BaseAdapter {
         movie.setPosterURL(posterURl);
 
 
-        new AsyncTask<String, Void, Bitmap>() {
+        if (posters.get(position) != null)
+            moviePoster.setImageBitmap(posters.get(position));
 
-            @Override
-            protected Bitmap doInBackground(String... results) {
 
-                String poster = results[0];
 
-                try {
-
-                    InputStream inputStream = new URL(poster).openStream();
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-
-                    return bitmap;
-
-                } catch (Exception e) {
-                    Log.e("failed loading poster", e.toString());
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                moviePoster.setImageBitmap(bitmap);
-            }
-        }.execute(posterURl);
 
 
         return convertView;

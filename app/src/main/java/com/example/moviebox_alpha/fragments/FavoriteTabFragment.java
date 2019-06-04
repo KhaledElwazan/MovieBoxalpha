@@ -1,10 +1,13 @@
 package com.example.moviebox_alpha.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,9 @@ import com.example.moviebox_alpha.R;
 import com.example.moviebox_alpha.db.MovieDB;
 import com.example.moviebox_alpha.retrofit.Result;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,9 +96,26 @@ public class FavoriteTabFragment extends Fragment {
             protected Boolean doInBackground(Void... voids) {
 
 
-                List<Result> results = movieDB.getMovieDBDao().getAll();
+                final List<Result> results = movieDB.getMovieDBDao().getAll();
 
-                movieAdapter.setMovies(results);
+
+                List<Bitmap> posters = new ArrayList<>();
+
+                try {
+                    for (int i = 0; i < results.size(); i++) {
+                        InputStream inputStream = null;
+
+                        inputStream = new URL(results.get(i).getPosterURL()).openStream();
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        posters.add(bitmap);
+                    }
+
+
+                } catch (Exception e) {
+                    Log.e("loading favorite", e.toString());
+                }
+
+                movieAdapter.setMovies(results, posters);
 
 
                 return true;

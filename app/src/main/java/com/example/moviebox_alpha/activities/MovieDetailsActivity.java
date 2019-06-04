@@ -164,5 +164,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
 
+//        Intent intent = new Intent(context, MainActivity.class);
+//        context.startActivity(intent);
+
+    }
 }

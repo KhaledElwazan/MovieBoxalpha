@@ -1,7 +1,10 @@
 package com.example.moviebox_alpha.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,6 +20,9 @@ import com.example.moviebox_alpha.retrofit.MyJSONResponse;
 import com.example.moviebox_alpha.retrofit.Result;
 import com.example.moviebox_alpha.retrofit.RetrofitClientInstance;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -84,7 +90,7 @@ public class TopRatedTabFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_top_rated_tab, container, false);
 
         GridView gridView = view.findViewById(R.id.dataGrid);
-        movieAdapter = new MovieAdapter( view.getContext());
+        movieAdapter = new MovieAdapter(view.getContext());
         gridView.setAdapter(movieAdapter);
 
 
@@ -96,12 +102,46 @@ public class TopRatedTabFragment extends Fragment {
             public void onResponse(Call<MyJSONResponse> call, Response<MyJSONResponse> response) {
 
 
-
                 if (response.isSuccessful()) {
 
-                    List<Result> results = response.body().getResults();
-                    movieAdapter.setMovies(results);
-                    movieAdapter.notifyDataSetChanged();
+
+                    final List<Result> results = response.body().getResults();
+
+
+                    new AsyncTask<List<Result>, Void, List<Bitmap>>() {
+
+
+                        @Override
+                        protected List<Bitmap> doInBackground(List<Result>... lists) {
+
+                            List<Bitmap> posters = new ArrayList<>();
+
+                            try {
+                                for (int i = 0; i < lists[0].size(); i++) {
+                                    InputStream inputStream = null;
+
+                                    lists[0].get(i).setPosterURL(getContext().getString(R.string.imageURL) + lists[0].get(i).getPosterPath());
+                                    inputStream = new URL(lists[0].get(i).getPosterURL()).openStream();
+                                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                    posters.add(bitmap);
+                                }
+
+
+                            } catch (Exception e) {
+                                Log.e("loading toprated", e.toString());
+                            }
+
+
+                            return posters;
+                        }
+
+                        @Override
+                        protected void onPostExecute(List<Bitmap> bitmaps) {
+                            movieAdapter.setMovies(results, bitmaps);
+                            movieAdapter.notifyDataSetChanged();
+                        }
+                    }.execute(results);
+
 
                 }
 
@@ -110,7 +150,7 @@ public class TopRatedTabFragment extends Fragment {
             @Override
             public void onFailure(Call<MyJSONResponse> call, Throwable t) {
 
-                Log.e("loading popular",t.toString());
+                Log.e("loading popular", t.toString());
 
             }
         });

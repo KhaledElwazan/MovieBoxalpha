@@ -1,7 +1,10 @@
 package com.example.moviebox_alpha.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,6 +20,9 @@ import com.example.moviebox_alpha.retrofit.MyJSONResponse;
 import com.example.moviebox_alpha.retrofit.Result;
 import com.example.moviebox_alpha.retrofit.RetrofitClientInstance;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -97,11 +103,43 @@ public class PopularTabFragment extends Fragment {
 
                 if (response.isSuccessful()) {
 
-                    List<Result> results = response.body().getResults();
+                    final List<Result> results = response.body().getResults();
 
 
-                    movieAdapter.setMovies(results);
-                    movieAdapter.notifyDataSetChanged();
+                    new AsyncTask<List<Result>, Void, List<Bitmap>>() {
+
+
+                        @Override
+                        protected List<Bitmap> doInBackground(List<Result>... lists) {
+
+                            List<Bitmap> posters = new ArrayList<>();
+
+                            try {
+                                for (int i = 0; i < lists[0].size(); i++) {
+                                    InputStream inputStream = null;
+
+                                    lists[0].get(i).setPosterURL(getContext().getString(R.string.imageURL) + lists[0].get(i).getPosterPath());
+                                    inputStream = new URL(lists[0].get(i).getPosterURL()).openStream();
+                                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                    posters.add(bitmap);
+                                }
+
+
+                            } catch (Exception e) {
+                                Log.e("loading popular", e.toString());
+                            }
+
+
+                            return posters;
+                        }
+
+                        @Override
+                        protected void onPostExecute(List<Bitmap> bitmaps) {
+                            movieAdapter.setMovies(results, bitmaps);
+                            movieAdapter.notifyDataSetChanged();
+                        }
+                    }.execute(results);
+
 
                 }
 
@@ -143,6 +181,7 @@ public class PopularTabFragment extends Fragment {
         mListener = null;
     }
 
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -157,4 +196,6 @@ public class PopularTabFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }
